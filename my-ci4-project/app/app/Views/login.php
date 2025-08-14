@@ -25,6 +25,6 @@
                 <button>login</button>
             </div>
         </form>
-        <a href="<?= site_url('register') ?>">Register</a>
+        <a href="<?= base_url('register') ?>">Register</a>
     </div>
 </body>

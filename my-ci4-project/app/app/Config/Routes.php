@@ -7,5 +7,6 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Users::index');
 $routes->setDefaultController('Users');
-$routes->match(['get', 'post'],'register', 'Users::index');
+$routes->get('register', 'Users::register');
+$routes->post('register', 'Users::register');
 
