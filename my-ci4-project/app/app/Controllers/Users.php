@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\Usermodel;
+use App\Models\UserModel;
 
 class Users extends BaseController
 {
@@ -13,6 +13,12 @@ class Users extends BaseController
     }
     
     public function register(){
+        $db = \Config\Database::connect();
+        if (!$db->connID) {
+            dd('Database connection failed', $db->error());
+        } else {
+            dd('Database connected succesfully');
+        }
         $data = [];
         
         if ($this->request->getMethod() == 'post'){
@@ -20,7 +26,7 @@ class Users extends BaseController
                 'firstname' => 'required|min_length[3]|max_length[50]',
                 'lastname' => 'required|min_length[3]|max_length[50]',
                 'email' => 'required|valid_email|min_length[6]|max_length[50]',
-                'password' => 'required|min_length[5]|max_length[200]',
+                'password' => 'required|min_length[5]|max_length[255]',
                 'password_confirm' => 'matches[password]'
             ];
 
@@ -35,7 +41,12 @@ class Users extends BaseController
                 'email' => $this->request->getVar('email'),
                 'password' => $this->request->getVar('password'),
             ];
-            $model->save($newdata);
+            
+            if ($model->save($newdata)) {
+                dd("User saved!", $newdata);
+            } else {
+                dd("Save failed", $model->errors(), $model->db->error());
+            }
             $session = session();
             $session->setFlashdata('success', 'Successful Registration');
             return redirect()->to('./login');
