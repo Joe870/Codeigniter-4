@@ -2,22 +2,14 @@
 
 use CodeIgniter\Model; 
 
-class UserModel extends Model {
-    protected $table = 'users'
-    protected $allowedFields = ['firstname', 'lastname', 'email', 'password', 'updated_at'];
-    protected $beforeInsert = ['beforeInsert'];
-    protected $beforeUpdate = ['beforeUpdate'];
-
-    protected function beforeInsert(array $data) {
-        if (isset($data['data']['password'])) {
-            $data['data']['password'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
-        }
-
-        return $data
-    }
-
-    
-    protected function beforeUpdate(array $data) {
+class Usermodel extends Model {
+    protected $table = 'users';
+    protected $id = 'id';
+    protected $allowedFields = ['firstname', 'lastname', 'email', 'password'];
+    protected $useTimestamps = false;
+    protected $beforeInsert = ['hashPassword'];
+    protected $beforeUpdate = ['hashPassword'];
+    protected function hashPassword(array $data) {
         if (isset($data['data']['password'])) {
             $data['data']['password'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
         }
