@@ -13,12 +13,12 @@ class Users extends BaseController
     }
     
     public function register(){
-        $db = \Config\Database::connect();
-        if (!$db->connID) {
-            dd('Database connection failed', $db->error());
-        } else {
-            dd('Database connected succesfully');
-        }
+        // $db = \Config\Database::connect();
+        // if (!$db->connID) {
+        //     dd('Database connection failed', $db->error());
+        // } else {
+        //     dd('Database connected succesfully');
+        // }
         $data = [];
         
         if ($this->request->getMethod() == 'post'){
@@ -32,8 +32,8 @@ class Users extends BaseController
 
         if (! $this->validate($rules)) {
             $data['validation'] = $this->validator;
-            dd($this->validator->getErrors());
-        }else{
+            // dd($this->validator->getErrors());
+        } else {
             $model = new UserModel();
             $newdata = [
                 'firstname' => $this->request->getVar('firstname'),
@@ -41,23 +41,16 @@ class Users extends BaseController
                 'email' => $this->request->getVar('email'),
                 'password' => $this->request->getVar('password'),
             ];
-            
+
             if ($model->save($newdata)) {
-                dd("User saved!", $newdata);
+                $session = session();
+                $session->setFlashdata('succes', 'Successful Registration');
+                return redirect()->to('./login');
             } else {
-                dd("Save failed", $model->errors(), $model->db->error());
+                $data['validation'] = $model->errors();
             }
-            $session = session();
-            $session->setFlashdata('success', 'Successful Registration');
-            return redirect()->to('./login');
         }
-        }
-
-        return view('register', $data);
     }
-
-    public function getUsers() {
-
-        
+    return view('register', $data);
     }
 }

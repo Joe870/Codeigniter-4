@@ -4,15 +4,15 @@ use CodeIgniter\Model;
 
 class UserModel extends Model {
     protected $table = 'users';
-    protected $id = 'id';
+    protected $primaryKey = 'id';
     protected $allowedFields = ['firstname', 'lastname', 'email', 'password'];
     protected $useTimestamps = false;
     protected $beforeInsert = ['hashPassword'];
     protected $beforeUpdate = ['hashPassword'];
     protected function hashPassword(array $data) {
-        if (isset($data['data']['password'])) {
-            $data['data']['password'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
+        if (isset($data['password'])) {
+            $data['data']['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         }
-        return $data
+        return $data;
     }
 }
