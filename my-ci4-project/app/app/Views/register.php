@@ -10,10 +10,10 @@
             </div>
         <?php endif; ?>
 
-        <?php if (session()->getFlashdata('validation')): ?>
+        <?php if (isset($validation)): ?>
             <div class="error-message" role="alert">
                 <ul class="list-disc list-inside">
-                    <?php foreach (session()->getFlashdata('validation')->getErrors() as $error): ?>
+                    <?php foreach ($validation as $error): ?>
                         <li><?= esc($error) ?></li>
                     <?php endforeach; ?>
                 </ul>
@@ -24,7 +24,6 @@
             <?= csrf_field() ?>
             <div class="form-row">
                 <label for="email">E-mail</label>
-                <!-- Retain old input value on validation failure -->
                 <input type="text" name="email" value="<?= old('email') ?>">
             </div>
             <div class="form-row">
