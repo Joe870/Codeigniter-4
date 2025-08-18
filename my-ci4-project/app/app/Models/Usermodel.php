@@ -10,8 +10,8 @@ class UserModel extends Model {
     protected $beforeInsert = ['hashPassword'];
     protected $beforeUpdate = ['hashPassword'];
     protected function hashPassword(array $data) {
-        if (isset($data['password'])) {
-            $data['data']['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        if (isset($data['data']['password'])) {
+            $data['data']['password'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
         }
         return $data;
     }

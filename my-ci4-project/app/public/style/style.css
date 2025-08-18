@@ -1,7 +1,12 @@
 body{
-    background-color: darkblue;
-    color: white;
+    background-image: url("wallpaper.jpg");
+    background-repeat: no-repeat;
+    color: black;
     text-align: center;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 
@@ -11,9 +16,9 @@ body{
 }
 
 .login {
-    background-color: lightblue;
+    background-color: lightcoral;
     padding: 20px;
-    border: 10px solid black;
+    border: 5px solid black;
     width: 350px;
     text-align: left; 
 }
@@ -39,6 +44,7 @@ button {
     color: white;
     border: none;
     cursor: pointer;
+    font-weight: bold;
 }
 
 button:hover {
@@ -51,4 +57,5 @@ a{
     color: white;
     border: none;
     cursor: pointer;
+    font-weight: bold;
 }

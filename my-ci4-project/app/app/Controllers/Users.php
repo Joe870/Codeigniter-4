@@ -8,7 +8,6 @@ class Users extends BaseController
     public function index(): string
     {
         $data = [];
-
         return view('login', $data);
     }
     
@@ -22,6 +21,8 @@ class Users extends BaseController
         $data = [];
         
         if ($this->request->getMethod() == 'post'){
+            dd($this->request->getPost());
+
             $rules = [
                 'firstname' => 'required|min_length[3]|max_length[50]',
                 'lastname' => 'required|min_length[3]|max_length[50]',
@@ -32,7 +33,9 @@ class Users extends BaseController
 
         if (! $this->validate($rules)) {
             $data['validation'] = $this->validator;
-            // dd($this->validator->getErrors());
+            dd($this->validator->getErrors());
+
+            return redirect()->back()->withInput()->with('validation', $this->validator);
         } else {
             $model = new UserModel();
             $newdata = [
@@ -42,12 +45,15 @@ class Users extends BaseController
                 'password' => $this->request->getVar('password'),
             ];
 
+            dd ($newdata);
+
             if ($model->save($newdata)) {
                 $session = session();
-                $session->setFlashdata('succes', 'Successful Registration');
+                $session->setFlashdata('success', 'Successful Registration');
                 return redirect()->to('./login');
             } else {
                 $data['validation'] = $model->errors();
+                dd($model->errors());
             }
         }
     }
