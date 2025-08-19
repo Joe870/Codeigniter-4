@@ -13,7 +13,7 @@
         <?php if (isset($validation)): ?>
             <div class="error-message" role="alert">
                 <ul class="list-disc list-inside">
-                    <?php foreach ($validation as $error): ?>
+                    <?php foreach (session()->getFlashdata('errors') as $error): ?>
                         <li><?= esc($error) ?></li>
                     <?php endforeach; ?>
                 </ul>
@@ -23,25 +23,20 @@
        <form action="<?= base_url('register') ?>" class="login" method="post">
             <?= csrf_field() ?>
             <div class="form-row">
+                <label for="username">Gebruikersnaam</label>
+                <input type="text" name="username" value="<?= old('username') ?>" required>
+            </div>
+            <div class="form-row">
                 <label for="email">E-mail</label>
-                <input type="text" name="email" value="<?= old('email') ?>">
+                <input type="text" name="email" value="<?= old('email') ?>" required>
             </div>
             <div class="form-row">
-                <label for="firstname">Voornaam</label>
-                <input type="text" name="firstname" value="<?= old('firstname') ?>">
+                <label for="lastname">Wachtwoord</label>
+                <input type="text" name="lastname" value="<?= old('lastname') ?>"required>
             </div>
-            <div class="form-row">
-                <label for="lastname">Achternaam</label>
-                <input type="text" name="lastname" value="<?= old('lastname') ?>">
-            </div>
-            <div class="form-row">
-                <label for="password">Wachtwoord</label>
-                <input type="password" name="password">
-            </div>
-            
             <div class="form-row">
                 <label for="password_confirm">Bevestig Wachtwoord</label>
-                <input type="password" name="password_confirm">
+                <input type="password" name="password_confirm" required>
             </div>
 
             <div class="form-row">

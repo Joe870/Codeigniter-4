@@ -7,55 +7,40 @@ class Users extends BaseController
 {
     public function index(): string
     {
-        $data = [];
-        return view('login', $data);
+        return view('login');
     }
-    
-    public function register(){
-        $data = [];
-        // // dd(env('database.default.hostname'));
-        // $data = [];
-        // try {
-        //      $db = \Config\Database::connect();
-        //      if (!$db->connID) {
-        //          dd('Database connection failed.');
-        //      } else {
-        //          dd('Database connected successfully!');
-        //      }
-        // } catch (\Exception $e) {
-        //     dd('Database connection failed with an exception:', $e->getMessage());
-        // }
-        
-        print_r($this->request->getMethod());
-        if ($this->request->getMethod() === 'POST'){
+
+    public function register()
+    {
+        $userModel = new UserModel();
+
+        if ($this->request->getMethod() === 'post') {
+            // Validation rules
             $rules = [
-                'firstname' => 'required|min_length[3]|max_length[50]',
-                'lastname' => 'required|min_length[3]|max_length[50]',
-                'email' => 'required|valid_email|min_length[6]|max_length[50]',
-                'password' => 'required|min_length[5]|max_length[255]',
-                'password_confirm' => 'matches[password]'
+                'username'          => 'required|min_length[3]|max_length[50]',
+                'email'             => 'required|valid_email|min_length[6]|max_length[50]|is_unique[users.email]',
+                'password'          => 'required|min_length[5]|max_length[255]',
+                'password_confirm'  => 'matches[password]'
             ];
 
-            if (! $this->validate($rules)) {
-                return redirect()->back()->withInput()->with('validation', $this->validator);
-            } else {
-                $model = new UserModel();
-                $newdata = [
-                    'firstname' => $this->request->getVar('firstname'),
-                    'lastname' => $this->request->getVar('lastname'),
-                    'email' => $this->request->getVar('email'),
-                    'password' => $this->request->getVar('password'),
+            if ($this->validate($rules)) {
+                // Save raw password -> model hashes it
+                $newData = [
+                    'username' => $this->request->getPost('username'),
+                    'email'    => $this->request->getPost('email'),
+                    'password' => $this->request->getPost('password'),
                 ];
-                print_r($newdata);
-                if ($model->save($newdata)) {
-                    $session = session();
-                    $session->setFlashdata('success', 'Successful Registration');
-                    return redirect()->to('./login');
-                } else {
-                    $data['validation'] = $model->errors();
-                }
+
+                $userModel->insert($newData);
+
+                return redirect()->to('/register')->with('success', 'User registered successfully!');
+            } else {
+                // If not valid, show errors
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             }
         }
-        return view('register', $data);
+
+        // GET request → show form
+        return view('register');
     }
 }
