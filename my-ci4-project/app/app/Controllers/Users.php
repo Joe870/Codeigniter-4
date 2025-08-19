@@ -26,7 +26,8 @@ class Users extends BaseController
         //     dd('Database connection failed with an exception:', $e->getMessage());
         // }
         
-        if ($this->request->getMethod() === 'post'){
+        print_r($this->request->getMethod());
+        if ($this->request->getMethod() === 'POST'){
             $rules = [
                 'firstname' => 'required|min_length[3]|max_length[50]',
                 'lastname' => 'required|min_length[3]|max_length[50]',
@@ -45,7 +46,7 @@ class Users extends BaseController
                     'email' => $this->request->getVar('email'),
                     'password' => $this->request->getVar('password'),
                 ];
-
+                print_r($newdata);
                 if ($model->save($newdata)) {
                     $session = session();
                     $session->setFlashdata('success', 'Successful Registration');

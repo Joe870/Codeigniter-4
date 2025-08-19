@@ -198,7 +198,7 @@ class Database extends Config
         $this->default['password'] = env('database.default.password', $this->default['password']);
         $this->default['database'] = env('database.default.database', $this->default['database']);
         $this->default['DBDriver'] = env('database.default.DBDriver', $this->default['DBDriver']);
-        $this->default['port'] = env('database.default.port', $this->default['port']);
+        $this->default['port'] = (int)env('database.default.port', $this->default['port']);
         // Ensure that we always set the database group to 'tests' if
         // we are currently running an automated test suite, so that
         // we don't overwrite live data on accident.
