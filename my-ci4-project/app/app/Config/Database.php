@@ -26,14 +26,14 @@ class Database extends Config
      */
     public array $default = [
         'DSN'      => '',
-        'hostname' => 'db',
-        'username' => 'ciuser',
-        'password' => 'cipass',
+        'hostname' => 'mysql_ci',
+        'username' => 'root',
+        'password' => 'root',
         'database' => 'ci4',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,
-        'DBDebug'  => true,
+        'DBDebug'  => (ENVIRONMENT !== 'production'),
         'charset'  => 'utf8mb4',
         'DBCollat' => 'utf8mb4_general_ci',
         'swapPre'  => '',
