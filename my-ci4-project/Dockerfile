@@ -1,26 +1,21 @@
-FROM php:8.2-cli
+FROM php:8.2-apache
 
-# Install dependencies for PHP extensions
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     libicu-dev \
     libzip-dev \
     libpng-dev \
-    libjpeg62-turbo-dev \
+    libjpeg-dev \
     libfreetype6-dev \
-    libonig-dev \
     unzip \
     git \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) \
-        intl \
-        mysqli \
-        pdo_mysql \
-        zip \
-        gd \
-        mbstring \
-    && rm -rf /var/lib/apt/lists/*
+    pkg-config \
+    libonig-dev \
+ && docker-php-ext-configure gd --with-freetype --with-jpeg \
+ && docker-php-ext-install -j$(nproc) intl mysqli pdo_mysql zip gd mbstring \
+ && a2enmod rewrite \
+ && sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
+ && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
+ && rm -rf /var/lib/apt/lists/*
 
-# Copy Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-WORKDIR /app
+WORKDIR /var/www/html

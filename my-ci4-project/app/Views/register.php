@@ -31,8 +31,8 @@
                 <input type="text" name="email" value="<?= old('email') ?>" required>
             </div>
             <div class="form-row">
-                <label for="lastname">Wachtwoord</label>
-                <input type="text" name="lastname" value="<?= old('lastname') ?>"required>
+                <label for="password">Wachtwoord</label>
+                <input type="text" name="password" value="<?= old('lastname') ?>"required>
             </div>
             <div class="form-row">
                 <label for="password_confirm">Bevestig Wachtwoord</label>
